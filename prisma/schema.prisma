@@ -14,10 +14,13 @@ datasource db {
 }
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  orderId    String
-  quantity   Int 
-  totalPrice Float
+  id         String    @id @default(uuid())
+  orderId    String    @map("order_id")
+  quantity   Int       @map("quantity")
+  totalPrice Float     @map("total_price")
   createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @default(now()) @map("updated_at") 
+  updatedAt  DateTime @default(now()) @map("updated_at")
+
+  @@map("order_table")
+
 }
