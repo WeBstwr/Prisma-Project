@@ -57,28 +57,19 @@ router.get("/:id", async (req, res) => {
 });
 
 router.patch("/:id", async (req, res) => {
-  const { orderId, quantity, totalPrice } = req.body;
   const { id } = req.params;
+  const { orderId, quantity, totalPrice } = req.body;
+  const updateData = {};
+
+  if (orderId) updateData.orderId = orderId;
+  if (quantity) updateData.quantity = quantity;
+  if (totalPrice) updateData.totalPrice = totalPrice;
+
   try {
-    let updateProduct;
-    if (orderId) {
-      updateProduct = await prisma.order.update({
-        where: { id },
-        data: { orderId },
-      });
-    }
-    if (quantity) {
-      updateProduct = await prisma.order.update({
-        where: { id },
-        data: { quantity },
-      });
-    }
-    if (totalPrice) {
-      updateProduct = await prisma.order.update({
-        where: { id },
-        data: { totalPrice },
-      });
-    }
+    const updateProduct = await prisma.order.update({
+      where: { id },
+      data: updateData,
+    });
     res.status(200).json(updateProduct);
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
